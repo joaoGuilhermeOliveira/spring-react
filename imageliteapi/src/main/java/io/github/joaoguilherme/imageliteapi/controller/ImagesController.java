@@ -41,7 +41,7 @@ public class ImagesController {
 
     @GetMapping("{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
-        var possibleImage = imageService.getBydId(id);
+        var possibleImage = imageService.getById(id);
         if (possibleImage.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

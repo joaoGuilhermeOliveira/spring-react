@@ -23,7 +23,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Optional<Image> getBydId(String id) {
+    public Optional<Image> getById(String id) {
         return imageRepository.findById(id);
     }
 

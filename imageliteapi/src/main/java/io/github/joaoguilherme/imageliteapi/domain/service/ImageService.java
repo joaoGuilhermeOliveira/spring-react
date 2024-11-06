@@ -10,7 +10,7 @@ public interface ImageService {
 
     Image save(Image image);
 
-    Optional<Image> getBydId(String id);
+    Optional<Image> getById(String id);
 
     List<Image> search(ImageExtension extension, String query);
 
