@@ -14,11 +14,11 @@ import java.util.List;
 public class ImageMapper {
 
     public Image mapToImage(MultipartFile file, String name, List<String> tags) throws IOException {
-        return Image.builder().name(name).tags(String.join(",", tags)).extension(ImageExtension.valuOf(MediaType.valueOf(file.getContentType()))).file(file.getBytes()).size(file.getSize()).build();
+        return Image.builder().name(name).tags(String.join(",", tags)).extension(ImageExtension.valueOf(MediaType.valueOf(file.getContentType()))).file(file.getBytes()).size(file.getSize()).build();
     }
 
     public ImageDto imagetoDto(Image image, String url) {
-        return ImageDto.builder().url(url).extension(image.getExtension().name()).name(image.getName()).size(image.getSize()).uploadoDate(image.getUploadDate().toLocalDate()).build();
+        return ImageDto.builder().url(url).extension(image.getExtension().name()).name(image.getName()).size(image.getSize()).uploadDate(image.getUploadDate().toLocalDate()).build();
     }
 
 }

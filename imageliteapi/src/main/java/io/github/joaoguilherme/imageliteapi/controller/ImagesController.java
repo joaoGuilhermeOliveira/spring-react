@@ -1,6 +1,8 @@
 package io.github.joaoguilherme.imageliteapi.controller;
 
+import io.github.joaoguilherme.imageliteapi.domain.dto.ImageDto;
 import io.github.joaoguilherme.imageliteapi.domain.entity.Image;
+import io.github.joaoguilherme.imageliteapi.domain.enums.ImageExtension;
 import io.github.joaoguilherme.imageliteapi.domain.mapper.ImageMapper;
 import io.github.joaoguilherme.imageliteapi.domain.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/images")
@@ -52,8 +55,21 @@ public class ImagesController {
         return new ResponseEntity<>(image.getFile(), headers, HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<List<ImageDto>> search(@RequestParam(value = "extension", required = false, defaultValue = "") String extension, @RequestParam(value = "query", required = false) String query) {
+
+        var result = imageService.search(ImageExtension.ofName(extension), query);
+
+        var images = result.stream().map(image -> {
+            var url = buildImageURL(image);
+            return imageMapper.imagetoDto(image, url.toString());
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(images);
+    }
+
     private URI buildImageURL(Image image) {
         String imagePath = "/" + image.getId();
-        return ServletUriComponentsBuilder.fromCurrentRequest().path(imagePath).build().toUri();
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path(imagePath).build().toUri();
     }
 }
